@@ -2,6 +2,8 @@ import { Divider, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import agent from "../../app/api/agent";
+import NotFound from "../../app/errors/NotFound";
 import { Product } from "../../app/models/poduct";
 
 
@@ -13,20 +15,20 @@ export default function ProductDetails() {
 
 
     useEffect(() => {
-
-        axios.get(`https://localhost:5001/api/Products/${id}`)
-            .then(response => setProduct(response.data))
-            .catch(error => console.log("error"))
+        agent.Catalog.details(parseInt(id))
+            .then(product => setProduct(product))
+            .catch(error => console.log(error))
             .finally(() => setLoading(false));
 
     }, [id]) //specified dependency. useEffect call when component mount or when parameter depency changed. 
     //if dependency is empty it will only be mounted once.
 
 
-    if (loading) return <h3>Loading...</h3>
+    if (loading) return <h3>Loading product...</h3>
  
-    if (!product) return <h3>Product not found</h3>
+    if (!product) return <NotFound/>
 
+    
     return(
 
 
