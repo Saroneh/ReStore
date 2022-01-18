@@ -1,10 +1,11 @@
 
-import { Badge, AppBar, Box, IconButton, List, ListItem, Switch, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import { Badge, AppBar, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from '@mui/material';
 import { ShoppingCart} from '@mui/icons-material';
-import { NavLink } from 'react-router-dom';
-import { display } from '@mui/system';
+import { Link, NavLink } from 'react-router-dom';
+import { useStoreContext } from '../context/StoreContext';
+import { useEffect } from 'react';
 
-
+// more about shoppingcar /** see section 73 */
 interface Props {
     darkMode: boolean;
     handleChange: () => void;
@@ -39,6 +40,10 @@ const navStyle =
 
 export default function Header({darkMode, handleChange}:Props) {
 
+    const {basket} = useStoreContext();
+    const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0)
+
+
     return(
         <AppBar position ='static' sx={{mb: 4}}>
             <Toolbar sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -55,7 +60,7 @@ export default function Header({darkMode, handleChange}:Props) {
                 </Box>
                 
                 <Box>
-                <List sx= {navStyle}>
+                <List sx={{display: 'flex', alignItems: 'center'}}>
                     {midLinks.map(({title,path}) => (
                   <ListItem 
                     component={NavLink} 
@@ -67,14 +72,14 @@ export default function Header({darkMode, handleChange}:Props) {
                     )) }
                 </List>
                 </Box>
-
+               
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                 <IconButton size='large' sx={{color: 'inherit'}}>
-                    <Badge badgeContent={4} color='secondary'>
-                    <ShoppingCart/>
+                    <Badge component={Link} to={'/basket/'} badgeContent={itemCount} color='secondary'>
+                    <ShoppingCart/>  
                     </Badge>
                 </IconButton>
-                <List sx= {navStyle}>
+                <List sx={{display: 'flex', alignItems: 'center'}}>
                     {rightLinks.map(({title,path}) => (
                   <ListItem 
                     component={NavLink} 

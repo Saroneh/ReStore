@@ -1,5 +1,5 @@
 
-import { Avatar, Grid, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Product } from "../../app/models/poduct";
 import ProductCard from "./ProductCard";
 

@@ -5,6 +5,7 @@ import { history } from "../..";
 const sleep =()  => new Promise(resolve => setTimeout(resolve, 1000)); //lecture 57
 
 axios.defaults.baseURL = 'http://localhost:5000/api/'
+axios.defaults.withCredentials = true; //section 70 09:50
 
 const responseBody = (response : AxiosResponse) => response.data;
 
@@ -63,10 +64,17 @@ const TestErrors ={
     getValidationError: () => requests.get('buggy/validation-error'),
 }
 
+const Basket = {
+    get: () => requests.get('basket'),
+    addItem: (product: number, quantity = 1) => requests.post(`basket?productId=${product}&quantity=${quantity}`,{}), //empty object as body
+    removeItem: (product: number, quantity= 1) => requests.delete(`basket?productId=${product}&quantity=${quantity}`), //empty object not needed  body
+}
+
 const agent = {
     Catalog,
     TestErrors,
     responseBody,
+    Basket,
 }
 
 export default agent;
